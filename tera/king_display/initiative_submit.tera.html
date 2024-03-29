@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frosthaven</title>
+    <script type="text/javascript" src="/frosthaven/javascript/pollReload.js"></script>
+    <script type="text/javascript" src="/frosthaven/javascript/gamestateTransition.js"></script>
+    <script type="text/javascript" src="/frosthaven/javascript/player.js"></script>
+</head>
+<body>
+<table id="initiative_submit_table">
+    <tr>
+        <th><input type="checkbox" disabled checked></th>
+        <th>Initiative</th>
+        <th>😈</th>
+        <th>Player</th>
+        <th>Submit</th>
+        <th>Delete</th>
+    </tr>
+    {% for player in players %}
+    {% set row_id = "player_row_" ~ loop.index %}
+    <tr id="{{row_id}}">
+        <td><input type="checkbox" disabled {% if player.initiative >= 0 %}checked="true"{% endif %}</td>
+        <td>{% if player.initiative >= 0 %}<input type="text" size="4" value="XX" disabled>{% else %}<input type="number" size="4" min="0" max="99">{% endif %}</td>
+        <td>{% if player.is_monster%}😈{% endif %}</td>
+        <td>{{player.name}}</td>
+        <td>
+            {% if player.initiative >= 0 %}
+            <button onclick='deletePlayerInitiative("{{player.name}}")'>Clear</button>
+            {% else %}
+            <button onclick='postPlayerInitiative("{{row_id}}")'>Submit</button>
+            {% endif %}
+        </td>
+        <td>
+            <button onclick='deletePlayer("{{player.name}}")'>Delete</button>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr id="new_player">
+        <td><input type="checkbox" disabled></td>
+        <td><input type="number" min="0" max="99"></td>
+        <td><input type="checkbox"></td>
+        <td><input type="text"></td>
+        <td>
+            <button onclick="putPlayer()">Add Player</button>
+        </td>
+    </tr>
+</table>
+
+<button id="refresh_button" onclick="reload()" style="visibility:hidden">Refresh</button>
+<br>
+{% if not initiative_missing %}
+<button onclick="startTurn()">Start Turn</button>
+{% endif %}
+
+<script>
+    pollFunction("{{gamestate}}", unhideRefreshButton);
+
+    function unhideRefreshButton()
+    {
+        document.getElementById("refresh_button").style["visibility"] = "visible";
+    }
+
+    function startTurn()
+    {
+        gamestateTransition();
+        reload();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frosthaven</title>
+    <script type="text/javascript" src="/frosthaven/javascript/pollReload.js"></script>
+    <script type="text/javascript" src="/frosthaven/javascript/gamestateTransition.js"></script>
+</head>
+<body>
+    <h1>Standby Turn {{gameturn}}</h1>
+    <button onclick="gamestateTransition()">Start Turn</button>
+
+    <script>
+        pollReload("{{gamestate}}");
+    </script>
+</body>
+</html>

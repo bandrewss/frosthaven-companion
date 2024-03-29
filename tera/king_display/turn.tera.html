@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frosthaven</title>
+    <script type="text/javascript" src="/frosthaven/javascript/pollReload.js"></script>
+    <script type="text/javascript" src="/frosthaven/javascript/gamestateTransition.js"></script>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>X</th>
+            <th>Initiative</th>
+            <th>😈</th>
+            <th>Player</th>
+        </tr>
+        {% for player in players %}
+        <tr>
+            <td><input type="checkbox"{%if player.turn_complete %}checked{% endif %}></td>
+            <td>{{player.initiative}}</td>
+            <td>{% if player.is_monster%}😈{% endif %}</td>
+            <td>{{player.name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if turns_complete %}
+    <button onclick="gamestateTransition()">Complete Turn</button>
+    {% else %}
+    <button onclick="playerTransition()">Next Player</button>
+    {% endif %}
+
+    <script>
+        pollReload("{{gamestate}}");
+    </script>
+</body>
+</html>

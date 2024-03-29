@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frosthaven</title>
+    <script type="text/javascript" src="/frosthaven/javascript/pollReload.js"></script>
+</head>
+<body>
+    <table>
+        <tr>
+            <th><input type="checkbox" checked></th>
+            <th>Initiative</th>
+            <th>😈</th>
+            <th>Player</th>
+        </tr>
+        {% for player in players %}
+        <tr>
+            <td><input type="checkbox" {% if player.initiative >= 0 %}checked{% endif %}></td>
+            <td>{% if player.initiative >= 0 %}XX{% endif %}</td>
+            <td>{% if player.is_monster%}😈{% endif %}</td>
+            <td>{{player.name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        pollReload("{{gamestate}}");
+    </script>
+</body>
+</html>
