@@ -43,10 +43,11 @@ pub async fn put_frosthaven_player(player: web::Json<models::player::CreatePlaye
 
 				superman::insert_player(&new_player);
 				let player_json = serde_json::to_string(&new_player).unwrap();
-				println!("Player JSON: {}", &player_json);
 				return HttpResponse::Ok().body(format!("{}", &player_json));
 			}
 	};
+
+	HttpResponse::NoContent().into()
 }
 
 #[post("/frosthaven/player/initiative")]
