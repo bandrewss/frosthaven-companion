@@ -38,13 +38,13 @@ pub fn clear_db()
 	", ()).unwrap();
 }
 
-pub fn insert_player(player: Player)
+pub fn insert_player(player: &Player)
 {
 	SQLITE.get().unwrap().execute
 	("
 		INSERT INTO players (name, initiative, is_monster, turn_complete)
 		VALUES (?1, ?2, ?3, FALSE)
-	", (player.name, player.initiative, player.is_monster)).unwrap();
+	", (&player.name, &player.initiative, &player.is_monster)).unwrap();
 }
 
 pub fn update_player_initiative_by_player_id(id: i32, initiative: i32)
