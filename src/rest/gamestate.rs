@@ -50,7 +50,7 @@ pub async fn post_frosthaven_gamestate_transition() -> impl Responder
 			{
 				match superman::get_current_player()
 				{
-					Some(_) => { return HttpResponse::BadRequest().body("Something isn't right, not sure what tho"); }
+					Some(_) => { return HttpResponse::BadRequest(); }
 					None => Gamestate::PostTurn,
 				}
 			}
