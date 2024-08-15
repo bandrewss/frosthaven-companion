@@ -41,6 +41,7 @@ async fn main() -> std::io::Result<()>
 				.service(rest::master_display::get_frosthaven_master_display)
 				.service(rest::king_display::get_frosthaven_king_display)
 				.service(rest::gamestate::get_frosthaven_gamestate_current)
+				.service(rest::player::get_players_by_initiative)
 				.service(rest::gamestate::delete_frosthaven_session)
 				.service(rest::gamestate::post_frosthaven_gamestate_transition)
 				.service(rest::gamestate::post_frosthaven_gamestate_next_player)
@@ -49,7 +50,7 @@ async fn main() -> std::io::Result<()>
 				.service(rest::player::delete_frosthaven_player_initiative)
 				.service(rest::player::delete_frosthaven_player)
 		})
-		.bind(("localhost", 8080))?
+		.bind(("0.0.0.0", 8080))?
 		.run()
 		.await
 }

@@ -50,7 +50,7 @@ pub async fn post_frosthaven_gamestate_transition() -> impl Responder
 			{
 				match superman::get_current_player()
 				{
-					Some(_) => { return HttpResponse::BadRequest(); }
+					Some(_) => { return HttpResponse::BadRequest().body("Cannot advance to next turn because there is still players who have not yet completed their turn"); }
 					None => Gamestate::PostTurn,
 				}
 			}
@@ -63,7 +63,7 @@ pub async fn post_frosthaven_gamestate_transition() -> impl Responder
 			}
 	};
 
-	HttpResponse::NoContent()
+	HttpResponse::Created().body(format!("{}", *gamestate_lock))
 }
 
 #[post("/frosthaven/gamestate/next-player")]

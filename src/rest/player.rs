@@ -1,5 +1,6 @@
 
-use actix_web::{put, post, delete, HttpResponse, Responder, web};
+use actix_web::{get, put, post, delete, HttpResponse, Responder, web};
+use serde_json::Result;
 
 use crate::gamestate::{Gamestate, GAMESTATE_MUTEX};
 use crate::superman;
@@ -40,7 +41,9 @@ pub async fn put_frosthaven_player(player: web::Json<models::player::CreatePlaye
 					turn_complete: false,
 				};
 
-				superman::insert_player(new_player)
+				superman::insert_player(&new_player);
+				let player_json = serde_json::to_string(&new_player).unwrap();
+				return HttpResponse::Ok().body(format!("{}", &player_json));
 			}
 	};
 
@@ -111,6 +114,15 @@ pub async fn delete_frosthaven_player(player_name: web::Json<models::player::Pla
 	superman::delete_player_by_player_name(player_name.name.as_str());
 
 	HttpResponse::NoContent()
+}
+
+#[get("/frosthaven/players")]
+pub async fn get_players_by_initiative() -> impl Responder
+{
+	let players = superman::get_all_players_by_initiative();
+	let player_json = serde_json::to_string(&players).unwrap();
+
+	HttpResponse::Ok().body(format!("{}", player_json))
 }
 
 fn initiative_is_valid(initiative: i32) -> bool
